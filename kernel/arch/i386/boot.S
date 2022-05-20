@@ -140,3 +140,57 @@ isr_common_stub:
     addl $8,%esp
     iret
 
+.macro IRQ val1, val2
+    .global irq\val1
+    .type irq\val1, @function
+    irq\val1:
+        cli
+        pushl $0
+        pushl $\val2
+        jmp irq_common_stub
+.endm
+
+IRQ 0, 32
+IRQ 1, 33
+IRQ 2, 34
+IRQ 3, 35
+IRQ 4, 36
+IRQ 5, 37
+IRQ 6, 38
+IRQ 7, 39
+IRQ 8, 40
+IRQ 9, 41
+IRQ 10, 42
+IRQ 11, 43
+IRQ 12, 44
+IRQ 13, 45
+IRQ 14, 46
+IRQ 15, 47
+
+.extern irq_handler
+
+.type irq_common_stub, @function
+irq_common_stub:
+    pusha
+    push %ds
+    push %es
+    push %fs
+    push %gs
+    movw $0x10, %ax
+    movw %ax, %ds
+    movw %ax, %es
+    movw %ax, %fs
+    movw %ax, %gs
+    movl %esp, %eax
+    pushl %eax
+    movl $irq_handler, %eax
+    call *%eax
+    popl %eax
+    popl %gs
+    popl %fs
+    popl %es
+    popl %ds
+    popa
+    addl $8, %esp
+    iret
+

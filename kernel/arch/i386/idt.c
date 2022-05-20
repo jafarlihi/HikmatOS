@@ -54,7 +54,7 @@ typedef struct idt_ptr {
 idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
 
-static void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags) {
+void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags) {
     idt_entries[num].base_lo = base & 0xFFFF;
     idt_entries[num].base_hi = (base >> 16) & 0xFFFF;
     idt_entries[num].sel = sel;
