@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include <kernel/tty.h>
 #include <arch/i386/isr.h>
 
