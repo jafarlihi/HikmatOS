@@ -26,6 +26,9 @@ stack_top:
 _start:
     movl $stack_top, %esp
 
+    push %ebx
+    push %eax
+
     # Call the global constructors.
     call _init
 
