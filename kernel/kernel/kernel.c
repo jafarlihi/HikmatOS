@@ -10,8 +10,6 @@
 #include <arch/i386/mm.h>
 
 void kernel_main(uint32_t mboot_magic, void *mboot_header) {
-    terminal_initialize();
-
     if (mboot_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
         printf("Error: We weren't booted by a compliant bootloader!\n");
         return;
@@ -23,6 +21,10 @@ void kernel_main(uint32_t mboot_magic, void *mboot_header) {
         printf("Error: No Multiboot memory map was provided!\n");
         return;
     }
+
+    init_mm(mboot_hdr, (uint32_t)mboot_hdr, (uint32_t)(mboot_hdr + sizeof(multiboot_info_t)));
+
+    terminal_initialize();
 
     init_gdt();
     printf("GDT initialized\n");
@@ -42,9 +44,27 @@ void kernel_main(uint32_t mboot_magic, void *mboot_header) {
     timer_wait(100);
     printf("Finished waiting\n");
 
-    init_mm(mboot_hdr, (uint32_t)mboot_hdr, (uint32_t)(mboot_hdr + sizeof(multiboot_info_t)));
     uint32_t new_frame = allocate_frame();
     uint32_t new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
+    printf("Frame allocated at: 0x%x\n", new_frame_addr);
+    new_frame = allocate_frame();
+    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
+    printf("Frame allocated at: 0x%x\n", new_frame_addr);
+    new_frame = allocate_frame();
+    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
+    printf("Frame allocated at: 0x%x\n", new_frame_addr);
+    new_frame = allocate_frame();
+    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
+    printf("Frame allocated at: 0x%x\n", new_frame_addr);
+    new_frame = allocate_frame();
+    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
+    printf("Frame allocated at: 0x%x\n", new_frame_addr);
+
+    void *buffer = kalloc(20000);
+    printf("Buffer allocated at: 0x%x\n", buffer);
+
+    new_frame = allocate_frame();
+    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
     printf("Frame allocated at: 0x%x\n", new_frame_addr);
 
     while (1) {}

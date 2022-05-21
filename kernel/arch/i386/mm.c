@@ -21,9 +21,9 @@ uint32_t mmap_read(uint32_t request, uint8_t mode) {
     uintptr_t cur_mmap_addr = (uintptr_t)verified_mboot_hdr->mmap_addr;
     uintptr_t mmap_end_addr = cur_mmap_addr + verified_mboot_hdr->mmap_length;
     uint32_t cur_num = 0;
+
     while (cur_mmap_addr < mmap_end_addr) {
-        multiboot_memory_map_t *current_entry =
-            (multiboot_memory_map_t *)cur_mmap_addr;
+        multiboot_memory_map_t *current_entry = (multiboot_memory_map_t *)cur_mmap_addr;
 
         uint64_t i;
         uint64_t current_entry_end = current_entry->addr + current_entry->len;
@@ -63,3 +63,23 @@ uint32_t allocate_frame() {
 
     return cur_num;
 }
+
+void *kalloc(uint32_t size) {
+    uint32_t current_size = 0;
+    uint32_t last_address;
+    uint32_t new_frame = allocate_frame();
+    uint32_t new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
+    uint32_t first_address = new_frame_addr;
+    while (current_size < size) {
+        last_address = new_frame_addr;
+        new_frame = allocate_frame();
+        new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
+        if (last_address + 0x1000 != new_frame_addr) {
+            first_address = new_frame_addr;
+            current_size = 0;
+        }
+        current_size += PAGE_SIZE;
+    }
+    return first_address;
+}
+
