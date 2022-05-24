@@ -1,5 +1,4 @@
 #include <stdint.h>
-
 #include <arch/i386/gdt.h>
 
 extern void gdt_flush(uint32_t);

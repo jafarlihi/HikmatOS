@@ -1,5 +1,4 @@
 #include <stdint.h>
-
 #include <arch/i386/isr.h>
 
 extern void irq0();

@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #include <kernel/tty.h>
 #include <arch/i386/multiboot.h>
 #include <arch/i386/gdt.h>
@@ -40,32 +39,9 @@ void kernel_main(uint32_t mboot_magic, void *mboot_header) {
     init_keyboard();
     printf("Keyboard initialized\n");
 
-    printf("Waiting 100 ticks\n");
-    timer_wait(100);
-    printf("Finished waiting\n");
-
-    uint32_t new_frame = allocate_frame();
-    uint32_t new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
-    printf("Frame allocated at: 0x%x\n", new_frame_addr);
-    new_frame = allocate_frame();
-    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
-    printf("Frame allocated at: 0x%x\n", new_frame_addr);
-    new_frame = allocate_frame();
-    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
-    printf("Frame allocated at: 0x%x\n", new_frame_addr);
-    new_frame = allocate_frame();
-    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
-    printf("Frame allocated at: 0x%x\n", new_frame_addr);
-    new_frame = allocate_frame();
-    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
-    printf("Frame allocated at: 0x%x\n", new_frame_addr);
-
-    void *buffer = kalloc(20000);
-    printf("Buffer allocated at: 0x%x\n", buffer);
-
-    new_frame = allocate_frame();
-    new_frame_addr = mmap_read(new_frame, MMAP_GET_ADDR);
-    printf("Frame allocated at: 0x%x\n", new_frame_addr);
+    init_paging();
+    printf("Paging enabled\n");
 
     while (1) {}
 }
+

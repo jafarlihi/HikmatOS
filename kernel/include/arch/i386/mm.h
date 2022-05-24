@@ -1,5 +1,4 @@
 #include <stdint.h>
-
 #include <arch/i386/multiboot.h>
 
 #define MMAP_GET_NUM 0

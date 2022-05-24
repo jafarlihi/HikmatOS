@@ -37,3 +37,4 @@ void outportsm(unsigned short port, unsigned char *data, unsigned long size) {
 void inportsm(unsigned short port, unsigned char *data, unsigned long size) {
     asm volatile ("rep insw" : "+D" (data), "+c" (size) : "d" (port) : "memory");
 }
+
