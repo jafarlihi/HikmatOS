@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <kernel/tty.h>
 #include <arch/i386/multiboot.h>
 #include <arch/i386/gdt.h>
