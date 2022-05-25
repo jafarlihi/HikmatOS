@@ -13,7 +13,7 @@
 .section .bss
 .align 16
 stack_bottom:
-.skip 16384 
+.skip 16384
 stack_top:
 
 .section .text
@@ -22,6 +22,7 @@ stack_top:
 _start:
     movl $stack_top, %esp
 
+    push %esp
     push %ebx
     push %eax
 
@@ -47,6 +48,13 @@ gdt_flush:
 
     jmp $0x08, $.flush
 .flush:
+    ret
+
+.global tss_flush
+.type tss_flush, @function
+tss_flush:
+    mov $0x2B, %ax
+    ltr %ax
     ret
 
 .global idt_flush

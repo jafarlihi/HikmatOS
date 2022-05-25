@@ -45,11 +45,6 @@ typedef struct idt_entry {
     unsigned short base_hi;
 } __attribute__((packed)) idt_entry_t;
 
-typedef struct idt_ptr {
-    unsigned short limit;
-    unsigned int base;
-} __attribute__((packed)) idt_ptr_t;
-
 idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
 
@@ -58,7 +53,7 @@ void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, uns
     idt_entries[num].base_hi = (base >> 16) & 0xFFFF;
     idt_entries[num].sel = sel;
     idt_entries[num].always0 = 0;
-    idt_entries[num].flags = flags;
+    idt_entries[num].flags = flags | 0x60;
 }
 
 void init_idt() {

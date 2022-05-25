@@ -7,6 +7,7 @@ volatile unsigned int timer_ticks = 0;
 
 void timer_handler(registers_t *r) {
     timer_ticks++;
+    switch_task();
 }
 
 void init_timer() {

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <kernel/tty.h>
+#include <kernel/task.h>
 #include <arch/i386/multiboot.h>
 #include <arch/i386/gdt.h>
 #include <arch/i386/idt.h>
@@ -9,7 +10,11 @@
 #include <arch/i386/keyboard.h>
 #include <arch/i386/mm.h>
 
-void kernel_main(uint32_t mboot_magic, void *mboot_header) {
+uint32_t initial_esp;
+
+void kernel_main(uint32_t mboot_magic, void *mboot_header, uint32_t initial_stack) {
+    initial_esp = initial_stack;
+
     if (mboot_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
         printf("Error: We weren't booted by a compliant bootloader!\n");
         return;
@@ -42,6 +47,19 @@ void kernel_main(uint32_t mboot_magic, void *mboot_header) {
 
     init_paging();
     printf("Paging enabled\n");
+
+    init_tasking();
+    printf("Tasking initialized\n");
+
+    int ret = fork();
+    if (ret == 0) printf("Printing from child\n");
+    else printf("Printing from parent\n");
+
+    init_irq(); // TODO: Why forking breaks IRQs?
+
+    printf("Waiting 100 ticks\n");
+    timer_wait(100);
+    printf("Finished waiting\n");
 
     while (1) {}
 }
