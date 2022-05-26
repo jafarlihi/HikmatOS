@@ -38,7 +38,10 @@ FREEOBJS=\
 		 string/memmove.o \
 		 string/memset.o \
 		 string/strlen.o \
+		 string/strdup.o \
+		 string/strcpy.o \
 		 ds/ordered_array.o \
+		 ds/linked_list.o \
 
 HOSTEDOBJS=\
 		   $(ARCH_HOSTEDOBJS) \

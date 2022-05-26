@@ -126,7 +126,6 @@ page_t *get_page(uint32_t address, int make, page_directory_t *dir) {
         return 0;
 }
 
-
 void page_fault(registers_t *regs) {
     uint32_t faulting_address;
     asm volatile("mov %%cr2, %0" : "=r" (faulting_address));

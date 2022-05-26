@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <kernel/tty.h>
 #include <kernel/task.h>
+#include <kernel/fs.h>
 #include <arch/i386/multiboot.h>
 #include <arch/i386/gdt.h>
 #include <arch/i386/idt.h>
@@ -51,15 +52,18 @@ void kernel_main(uint32_t mboot_magic, void *mboot_header, uint32_t initial_stac
     init_tasking();
     printf("Tasking initialized\n");
 
-    int ret = fork();
-    if (ret == 0)
-        printf("Printing from child\n");
-    else
-        printf("Printing from parent\n");
+    init_fs();
+    printf("FS initialized\n");
 
-    printf("Waiting 100 ticks\n");
-    timer_wait(100);
-    printf("Finished waiting\n");
+    int ret = fork();
+    if (ret == 0) {
+        printf("Printing from child\n"); // TODO: Why returning from child break IRQs?
+    } else {
+        printf("Printing from parent\n");
+        printf("Waiting 100 ticks\n");
+        timer_wait(100);
+        printf("Finished waiting\n");
+    }
 
     while (1) {}
 }

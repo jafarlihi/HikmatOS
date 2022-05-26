@@ -14,6 +14,8 @@ extern "C" {
     void* memmove(void*, const void*, size_t);
     void* memset(void*, int, size_t);
     size_t strlen(const char*);
+    char *strdup(char*);
+    char *strcpy(char*, const char*);
 
 #ifdef __cplusplus
 }

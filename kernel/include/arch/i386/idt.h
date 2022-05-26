@@ -1,5 +1,5 @@
-#ifndef _IDT.H
-#define _IDT.H 1
+#ifndef _IDT_H
+#define _IDT_H 1
 
 typedef struct idt_ptr {
     unsigned short limit;
