@@ -1,6 +1,7 @@
 #include <string.h>
 #include <kernel/task.h>
 #include <arch/i386/gdt.h>
+#include <arch/i386/irq.h>
 #include <arch/i386/paging.h>
 
 volatile task_t *current_task;
@@ -124,7 +125,10 @@ int fork() {
         asm volatile("sti");
 
         return new_task->id;
-    } else return 0;
+    } else {
+        irq_remap();
+        return 0;
+    }
 }
 
 int getpid() {

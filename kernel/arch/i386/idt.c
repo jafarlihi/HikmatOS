@@ -36,6 +36,7 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
+extern void isr128();
 
 typedef struct idt_entry {
     unsigned short base_lo;
@@ -45,8 +46,8 @@ typedef struct idt_entry {
     unsigned short base_hi;
 } __attribute__((packed)) idt_entry_t;
 
-idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
+idt_entry_t idt_entries[256];
 
 void idt_set_gate(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags) {
     idt_entries[num].base_lo = base & 0xFFFF;
@@ -94,6 +95,7 @@ void init_idt() {
     idt_set_gate(29, (uint32_t)isr29, 0x08, 0x8E);
     idt_set_gate(30, (uint32_t)isr30, 0x08, 0x8E);
     idt_set_gate(31, (uint32_t)isr31, 0x08, 0x8E);
+    idt_set_gate(128, (uint32_t)isr128, 0x08, 0x8E);
 
     idt_flush((uint32_t)&idt_ptr);
 }

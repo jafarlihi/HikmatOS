@@ -14,7 +14,7 @@ void irq_uninstall_handler(int32_t irq) {
     irq_routines[irq] = 0;
 }
 
-static void irq_remap(void) {
+void irq_remap(void) {
     outportb(0x20, 0x11);
     outportb(0xA0, 0x11);
     outportb(0x21, 0x20);
@@ -26,7 +26,6 @@ static void irq_remap(void) {
     outportb(0x21, 0x0);
     outportb(0xA1, 0x0);
 }
-
 void init_irq() {
     irq_remap();
 

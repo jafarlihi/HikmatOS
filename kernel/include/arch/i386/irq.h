@@ -22,4 +22,5 @@ void irq_install_handler(int32_t irq, void (*handler)(registers_t *r));
 void irq_uninstall_handler(int32_t irq);
 void init_irq();
 void irq_handler(registers_t *r);
+void irq_remap();
 

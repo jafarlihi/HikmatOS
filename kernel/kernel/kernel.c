@@ -52,10 +52,10 @@ void kernel_main(uint32_t mboot_magic, void *mboot_header, uint32_t initial_stac
     printf("Tasking initialized\n");
 
     int ret = fork();
-    if (ret == 0) printf("Printing from child\n");
-    else printf("Printing from parent\n");
-
-    init_irq(); // TODO: Why forking breaks IRQs?
+    if (ret == 0)
+        printf("Printing from child\n");
+    else
+        printf("Printing from parent\n");
 
     printf("Waiting 100 ticks\n");
     timer_wait(100);
